@@ -8,7 +8,7 @@ def readfiletrim(fpath):
    c = h.read()
    h.close()
 
-   c = re.sub(c, "^<\?php\s*", "", re.IGNORECASE)
+   c = re.sub("^<\?php\s*", "", c, re.IGNORECASE)
    c = c.strip()
 
    return c
@@ -22,5 +22,5 @@ if not os.path.isdir(os.path.join(path, "dist")):
    os.mkdir(os.path.join(path, "dist"))
 
 h = open(os.path.join(path, "dist", "pumpkinpy.php"), "w")
-h.write("\n\n".join(allcontents)+"\n")
+h.write("<?php\n\n"+"\n\n".join(allcontents)+"\n")
 h.close()
