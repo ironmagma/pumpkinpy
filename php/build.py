@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from glob import glob
 import os, re
 
@@ -15,7 +16,7 @@ def readfiletrim(fpath):
 
 allcontents = []
 
-for x in glob(os.path.join(path, "src", "*.php")):
+for x in sorted(glob(os.path.join(path, "src", "*.php"))):
    allcontents.append(readfiletrim(x))
 
 if not os.path.isdir(os.path.join(path, "dist")):
@@ -24,3 +25,4 @@ if not os.path.isdir(os.path.join(path, "dist")):
 h = open(os.path.join(path, "dist", "pumpkinpy.php"), "w")
 h.write("<?php\n\n"+"\n\n".join(allcontents)+"\n")
 h.close()
+

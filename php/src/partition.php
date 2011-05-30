@@ -2,6 +2,10 @@
 
 function partition($haystack, $needle) {
    $nedlen = strlen($needle);
+   if ($nedlen === 0) {
+      throw new ValueError("empty separator");
+   }
+
    $nedpos = strpos($haystack, $needle);
 
    if ($nedpos !== FALSE) {
