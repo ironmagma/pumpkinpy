@@ -1,4 +1,4 @@
-# Legal boing crap follows. In simple english, you can use this
+# Legal boring crap follows. In simple english, you can use this
 # code in your own project, be your project commercial or free.
 # Just be sure to include the license and stuff. The "copyright"
 # here is just for technical reasons.
