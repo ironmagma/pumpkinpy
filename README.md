@@ -12,36 +12,32 @@ the constraints of the language of implementation.
 
 Presently, support is as follows:
 
-<!-- begin chart -->
-
-<table>
+<!-- begin chart --><table>
    <caption>Supported Languages and Functions</caption>
    <thead>
-      <tr>
-         <td></td>
-         <th>`partition`</th>
-         <th>`rpartition`</th>
-         <th>`startswith`</th>
-         <th>`endswith`</th>
-      </tr>
-      <tr>
-         <th>js</th>
-         <td>&#10003;</td>
-         <td>&#10007;</td>
-         <td>&#10007;</td>
-         <td>&#10007;</td>
-      </tr>
-      <tr>
-         <th>php</th>
-         <td>&#10003;</td>
-         <td>&#10003;</td>
-         <td>&#10003;</td>
-         <td>&#10003;</td>
-      </tr>
+         <tr>
+            <td></td>
+            <th>`endswith`</th>
+            <th>`startswith`</th>
+            <th>`partition`</th>
+            <th>`rpartition`</th>
+         </tr>
+         <tr>
+            <th>php</th>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+         </tr>
+         <tr>
+            <th>js</th>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+         </tr>
    </thead>
-</table>
-
-<!-- end chart -->
+</table><!-- end chart -->
 
 Contact
 -------

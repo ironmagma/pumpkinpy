@@ -21,12 +21,14 @@
 # along with Pumpkinpy.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os, subprocess
+from itertools import ifilter as filtered, imap as mapped, ifilterfalse, chain
+
+path = os.path.dirname(os.path.abspath(__file__))
 
 langs = {
    "php": "PHP",
    "js": "JavaScript"
 }
-
 
 funcs = [
    [
@@ -46,15 +48,80 @@ funcs = [
          ["Hello world! How are you doing today?", ","],
          ["Hello world! How are you doing today?", ""]
       ]
+   ],
+   [
+      "startswith",
+      "stringfunc",
+      [
+         ["abcdefgh", ""],
+         ["abcdefgh", "abc"],
+         ["abcdefgh", "a"],
+         ["abcdefgh", "abcdefghi"],
+         ["abcdefgh", "bcdefgh"]
+      ]
+   ],
+   [
+      "endswith",
+      "stringfunc",
+      [
+         ["abcdefgh", ""],
+         ["abcdefgh", "fgh"],
+         ["abcdefgh", "h"],
+         ["abcdefgh", "abcdefg"],
+         ["abcdefgh", "abcdefghi"],
+      ]
    ]
 ]
+
+####
+
+
+def itercat(*iterators):
+    """Concatenate several iterators into one."""
+    for i in iterators:
+        for x in i:
+            yield x
+
+allfuncs = iter([]) # Find functions for which there are no tests
+
+for lang in langs.keys():
+   myfuncs = filtered(lambda x: not x.startswith("$"), os.listdir(os.path.join(path, lang, "src"))) # filter out $preamble, etc. 
+   myfuncs = mapped(lambda x: x.rpartition(".")[0], myfuncs)
+   allfuncs = itercat(myfuncs, allfuncs)
+
+def unique_everseen(iterable, key=None):
+    "List unique elements, preserving order. Remember all elements ever seen."
+    # unique_everseen('AAAABBBCCDAABBB') --> A B C D
+    # unique_everseen('ABBCcAD', str.lower) --> A B C D
+    seen = set()
+    seen_add = seen.add
+    if key is None:
+        for element in ifilterfalse(seen.__contains__, iterable):
+            seen_add(element)
+            yield element
+    else:
+        for element in iterable:
+            k = key(element)
+            if k not in seen:
+                seen_add(k)
+                yield element
+
+allfuncs = unique_everseen(allfuncs)
+
+funcnames = [i[0] for i in funcs]
+allfuncs = filtered(lambda fun: not fun in funcnames, allfuncs) # Filter out unsupported items
+
+for unsupportedfunc in allfuncs:
+   print "[!] No test for", unsupportedfunc
+
+
+####
 
 results = []
 
 veryverbose_on = "-vv" in sys.argv[1:] or "--very-verbose" in sys.argv[1:]
 verbose_on = "-v" in sys.argv[1:] or "--verbose" in sys.argv[1:] or veryverbose_on
 
-path = os.path.dirname(os.path.abspath(__file__))
 
 def vp(*args):
    global verbose_on
@@ -71,7 +138,6 @@ for x, y in langs.items():
    vp("Building "+y)
    subprocess.check_call([os.path.join(".", x, "build.py")])
    
-
 for function, kind, tests in funcs:
    for test in tests:
       if kind == "stringfunc":
@@ -87,12 +153,24 @@ for function, kind, tests in funcs:
          raise Exception("Unknown function type `%s`." % kind)
       test.append([success, result])
          
+all_results = [] # list of all test results, for generating table in readme, etc.
+
 for lang in langs.items():
    vp("\nBeginning unit tests on", lang[1])
    execfile(os.path.join(path,"_helpers",lang[0]+'.py'))
+
+   thislangsresults = [lang[0], lang[1], {}]
+   mysupport = thislangsresults[2] # This is a dict that will describe support of each function.
+   all_results.append(thislangsresults)
+
    for function, kind, tests in funcs:
+
+      num_tests = len(tests)
+      num_passed = 0
+
       for test in tests:
          if isSupported(function):
+
             args = test[:-1]
             code = genTest(function, kind, args)
             result = genResult(code)
@@ -114,5 +192,28 @@ for lang in langs.items():
                vp(lang[1]+" failed test in "+function+".")
                vvp("\tExpected: "+expected+"\n\tActual: "+actual+"\n\tArgs: "+json.dumps(args))
 
+            if passedTest:
+               num_passed += 1
+
          else:
             vp(lang[1], "does not support", function+".", "Skipping.")
+
+      mysupport[function] = [num_passed, num_tests] 
+
+# Display overall results of the tests
+
+print "\nTest results: "
+allsuccess = True
+
+for result in all_results:
+   support = result[2]
+   for func, fract in support.items():
+      if fract[0] != fract[1]:
+         allsuccess = False
+         print result[0], func, "(", fract[0], "/", fract[1], ")"
+
+
+if allsuccess:
+   print "All tests successful."
+
+execfile("_helpers/_gentable.py")
