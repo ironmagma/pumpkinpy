@@ -33,7 +33,6 @@ def readfiletrim(fpath):
    c = h.read()
    c = re.sub(comments, "", c) # strip comments
    c = c.strip()
-   print c
    h.close()
    return c
 
