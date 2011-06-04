@@ -1,6 +1,8 @@
 pumpkinpy
 =========
 
+About
+-----
 `pumpkinpy` is a project to create ports of Python's standard library functions to other languages.
 
 The reasoning for this is that Python's standard library contains a lot of very nifty functions, particularly
@@ -40,3 +42,8 @@ Presently, support is as follows:
 </table>
 
 <!-- end chart -->
+
+Contact
+-------
+
+For support and questions, contact ppeterson@ufl.edu.
