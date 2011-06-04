@@ -24,26 +24,7 @@ along with Pumpkinpy.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-String.prototype.partition = function (needle) {
-
-   var nedlen = needle.length;
-
-   if (nedlen === 0) {
-      throw new ValueError("empty separator");
-   }
-
-   var haystack = this;
-   var nedpos = haystack.indexOf(needle);
-   var before, after;
-
-   if (nedpos !== -1) {
-      before = haystack.substring(0, nedpos);
-      after = haystack.substring(nedpos+nedlen);
-   } else {
-      before = haystack;
-      needle = "";
-      after = "";
-   }
-
-   return [before, needle, after];
-};
+function ValueError(message) {
+   this.name = "ValueError";
+   this.message = message;
+}
