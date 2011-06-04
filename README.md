@@ -12,7 +12,8 @@ the constraints of the language of implementation.
 
 Presently, support is as follows:
 
-<!-- begin chart --><table>
+<!-- begin chart -->
+<table>
    <caption>Supported Languages and Functions</caption>
    <thead>
          <tr>
@@ -37,7 +38,8 @@ Presently, support is as follows:
             <td>&#10003;</td>
          </tr>
    </thead>
-</table><!-- end chart -->
+</table>
+<!-- end chart -->
 
 Contact
 -------
