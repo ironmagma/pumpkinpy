@@ -28,13 +28,15 @@ from glob import glob
 import os, re
 
 path = os.path.dirname(os.path.abspath(__file__))
+comments = re.compile(r"/\*((?!\*/)(.|\n))*\*/")
 
 def readfiletrim(fpath):
    h = open(fpath, "r")
    c = h.read()
    h.close()
 
-   c = re.sub("^<\?php\s*", "", c, re.IGNORECASE)
+   c = re.sub("^<\?php\s*", "", c, flags = re.IGNORECASE)
+   c = re.sub(comments, "", c)
    c = c.strip()
 
    return c

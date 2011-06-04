@@ -23,15 +23,20 @@
 # along with Pumpkinpy.  If not, see <http://www.gnu.org/licenses/>.
 
 from glob import glob
-import os
+import os, re
 
 path = os.path.dirname(os.path.abspath(__file__))
+comments = re.compile(r"/\*((?!\*/)(.|\n))*\*/")
 
 def readfiletrim(fpath):
    h = open(fpath, "r")
-   c = h.read().strip()
+   c = h.read()
+   c = re.sub(comments, "", c) # strip comments
+   c = c.strip()
+   print c
    h.close()
    return c
+
 
 allcontents = []
 
