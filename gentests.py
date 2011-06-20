@@ -70,6 +70,16 @@ funcs = [
          ["abcdefgh", "abcdefg"],
          ["abcdefgh", "abcdefghi"],
       ]
+   ],
+   [
+      "rstrip",
+      "stringfunc",
+      [
+         ["  Johann went to the store today.    "],
+         ["Johann went to the store today.    "],
+         ["   Johann went to the store today."],
+         ["   Johann went to the store today.    \0"]
+      ]
    ]
 ]
 

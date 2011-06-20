@@ -35,7 +35,7 @@ def readfiletrim(fpath):
    c = h.read()
    h.close()
 
-   c = re.sub("^<\?php\s*", "", c, flags = re.IGNORECASE)
+   c = re.sub(re.compile("^<\?php\s*", flags = re.IGNORECASE), "", c)
    c = re.sub(comments, "", c)
    c = c.strip()
 
